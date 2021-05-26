@@ -4,7 +4,7 @@ var io = require('socket.io')(app); // Socket.IO
 var usuarios = []; // Lista de usuários
 var ultimas_mensagens = []; // Lista com ultimas mensagens enviadas no chat
 
-app.listen(3000);
+app.listen(8080);
 
 console.log("Aplicação está em execução...");
 
