@@ -64,7 +64,7 @@ io.on("connection", function(socket){
 		if(usuario == null)
 			usuario = ''; // Caso não tenha um usuário, a mensagem será enviada para todos da sala
 
-		mensagem_enviada = "[ " + pegarDataAtual() + " ] " + socket.apelido + " diz: " + mensagem_enviada;
+		mensagem_enviada = "[ " + pegarDataAtual() + " ] " + socket.apelido + ": " + mensagem_enviada;
 		var obj_mensagem = {msg: mensagem_enviada, tipo: ''};
 
 		if(usuario == ''){
