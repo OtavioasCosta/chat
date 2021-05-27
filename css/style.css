@@ -5,39 +5,66 @@ html, body{
 	padding: 0;
 }
 body{
-	background:#302F31;
+	background: url(../img/bg.png) no-repeat center;
+	background-size: cover;
 	padding:10px;
+	height: 100vh;
+}
+
+#acesso_usuario form {
+	display: flex;
 }
 
 form{
 	margin:15px 0;
 }
+
 form input[type='text']{
-	border:2px solid #45C5BF;
-	border-radius: 5px;
-	padding:5px;
+	border: none;
+	border-radius: 20px;
+	padding: 10px;
 	width:75%;
+	background: rgba(0, 0, 0, .5);
+	color: #fff;
+	font-weight: bold;
+
 }
+
+form input[type='text']:focus {
+	outline: none;
+}
+
+form input[type='text']::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: #fff;
+	opacity: 1; /* Firefox */
+  }
+
 form input[type='submit']{
-	background: #45C5BF;
+	background: #333;
 	border:none;
-	border-radius: 5px;
+	border-radius: 10px;
 	color:#FFF;
 	cursor:pointer;
 	font-weight: bold;
-	padding:7px 5px;
+	padding: 10px;
 	width:19%;
+	margin-left: 10px;
 }
 #historico_mensagens, #lista_usuarios{
-	background: #FFF;
-	border:2px solid #45C5BF;
+	background: rgba(0, 0, 0, .5);
 	height: 550px;
 	float:left;
 	margin-bottom: 10px;
-	width:75%;
+    width: calc(75% - 20px);
+	overflow-y: auto;
+	border-radius: 10px;
+	padding: 10px;
+	color: #fff;
 }
 #sala_chat{
 	display: none;
+	position: relative;
+	z-index: 5;
 }
 #acesso_usuario{
 	height:30px;
@@ -56,19 +83,56 @@ form input[type='submit']{
 	border-right: 0;
 }
 #lista_usuarios{
-border-left: 1px solid #45C5BF;
+	border: none;
 	height: 554px;
-	width: 20%;
+	color: #fff;
+	margin-left: 10px;
+	width: calc(25% - 20px);
+	font-weight: bold;
+
 }
 
+#lista_usuarios:focus {
+	outline: none;
+}
+
+
+
+
 #historico_mensagens .sistema{
-	background-color: #45C5BF;
+	background-color: rgba(255, 255, 255, .5);
 	color: #FFF;
 	font-weight: bold;
+	padding: 5px;
+	border-radius: 10px;
 }
 
 #historico_mensagens .privada{
-	background-color: #CCC;
-	color: #000;
+	background-color: rgba(255, 255, 255, .5);
+	color: #333;
 	font-weight: bold;
+	border-radius: 10px;
+	padding: 10px;
 }
+
+/* width */
+::-webkit-scrollbar {
+	width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+	background-color: rgba(255, 255, 255, .8);
+	border-radius: 10px;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+	background: #333;
+	border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+	background: #555;
+  }

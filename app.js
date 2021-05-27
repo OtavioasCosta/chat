@@ -42,7 +42,7 @@ io.on("connection", function(socket){
 			}
 
 
-			var mensagem = "[ " + pegarDataAtual() + " ] " + apelido + " acabou de entrar na sala";
+			var mensagem = pegarDataAtual() + " —  @" + apelido + " acabou de entrar na sala";
 			var obj_mensagem = {msg: mensagem, tipo: 'sistema'};
 
 			io.sockets.emit("atualizar usuarios", Object.keys(usuarios)); // Enviando a nova lista de usuários
@@ -64,7 +64,7 @@ io.on("connection", function(socket){
 		if(usuario == null)
 			usuario = ''; // Caso não tenha um usuário, a mensagem será enviada para todos da sala
 
-		mensagem_enviada = "[ " + pegarDataAtual() + " ] " + socket.apelido + ": " + mensagem_enviada;
+		mensagem_enviada =  pegarDataAtual() + " — @" + socket.apelido + ": " + mensagem_enviada;
 		var obj_mensagem = {msg: mensagem_enviada, tipo: ''};
 
 		if(usuario == ''){
@@ -81,7 +81,7 @@ io.on("connection", function(socket){
 
 	socket.on("disconnect", function(){
 		delete usuarios[socket.apelido];
-		var mensagem = "[ " + pegarDataAtual() + " ] " + socket.apelido + " saiu da sala";
+		var mensagem = pegarDataAtual() + " —  @" + socket.apelido + " saiu da sala";
 		var obj_mensagem = {msg: mensagem, tipo: 'sistema'};
 
 
@@ -106,7 +106,7 @@ function pegarDataAtual(){
 	var minuto = (dataAtual.getMinutes()<10 ? '0' : '') + dataAtual.getMinutes();
 	var segundo = (dataAtual.getSeconds()<10 ? '0' : '') + dataAtual.getSeconds();
 
-	var dataFormatada = dia + "/" + mes + "/" + ano + " " + hora + ":" + minuto + ":" + segundo;
+	var dataFormatada = dia + "-" + mes + "-" + ano + " " + hora + ":" + minuto + ":" + segundo;
 	return dataFormatada;
 }
 
