@@ -1,4 +1,3 @@
-  
 html, body{
 	font-family: Arial, Tahoma, sans-serif;
 	margin: 0;
@@ -34,9 +33,9 @@ form input[type='text']:focus {
 	outline: none;
 }
 
-form input[type='text']::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+form input[type='text']::placeholder { 
 	color: #fff;
-	opacity: 1; /* Firefox */
+	opacity: 1; 
   }
 
 form input[type='submit']{
@@ -96,9 +95,6 @@ form input[type='submit']{
 	outline: none;
 }
 
-
-
-
 #historico_mensagens .sistema{
 	background-color: rgba(255, 255, 255, .5);
 	color: #FFF;
@@ -115,24 +111,22 @@ form input[type='submit']{
 	padding: 10px;
 }
 
-/* width */
+
 ::-webkit-scrollbar {
 	width: 10px;
-  }
+}
   
-  /* Track */
-  ::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
 	background-color: rgba(255, 255, 255, .8);
 	border-radius: 10px;
-  }
+}
   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
+
+::-webkit-scrollbar-thumb {
 	background: #333;
 	border-radius: 10px;
-  }
+}
   
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
 	background: #555;
-  }
+}
