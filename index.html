@@ -5,17 +5,17 @@
 	<link rel="stylesheet" type="text/css" href="/css/style.css" />
 </head>
 <body>
-	<div id='acesso_usuario'>
+	<div id='user_access'>
 		<form id='login'>
-			<input type='text' placeholder='Insira seu apelido' name='apelido' id='apelido' />
+			<input type='text' placeholder='Insira seu apelido' name='nickname' id='nickname' />
 			<input type='submit' value='Entrar' />
 		</form>
 	</div>
-	<div id='sala_chat'>
-		<div id="historico_mensagens"></div>
-		<select multiple="multiple" id='lista_usuarios'><option value=''>Todos</option></select>
+	<div id='chat_room'>
+		<div id="feed_message"></div>
+		<select multiple="multiple" id='feed_users'><option value=''>Todos</option></select>
 		<form id='chat'>
-			<input type='text' id='texto_mensagem' name='texto_mensagem' />
+			<input type='text' id='text_message' name='text_message' />
 			<input type='submit' value='Enviar mensagem!' />	
 		</form>
 	</div>
@@ -28,40 +28,40 @@
 		$("form#chat").submit(function(e){
 			e.preventDefault();
 
-			const mensagem = $(this).find("#texto_mensagem").val();
-			const usuario = $("#lista_usuarios").val();
+			const message = $(this).find("#text_message").val();
+			const user = $("#feed_users").val();
 
-			socket.emit("enviar mensagem", {msg: mensagem, usu: usuario}, function(){
-				$("form#chat #texto_mensagem").val("");
+			socket.emit("enviar mensagem", {msg: message, usu: user}, function(){
+				$("form#chat #text_message").val("");
 			});
 		});
 
 
-		socket.on("atualizar mensagens", function(dados){
-			const mensagem_formatada = $("<p />").text(dados.msg).addClass(dados.tipo);
-			$("#historico_mensagens").append(mensagem_formatada);
+		socket.on("atualizar mensagens", function(date){
+			const formatted_message = $("<p />").text(date.msg).addClass(date.type);
+			$("#feed_message").append(formatted_message);
 		});
 
 		$("form#login").submit(function(e){
 			e.preventDefault();
 
-			socket.emit("entrar", $(this).find("#apelido").val(), function(valido){
-				if(valido){
-					$("#acesso_usuario").hide();
-					$("#sala_chat").show();
+			socket.emit("entrar", $(this).find("#nickname").val(), function(valid){
+				if(valid){
+					$("#user_access").hide();
+					$("#chat_room").show();
 				}else{
-					$("#acesso_usuario").val("");
+					$("#user_access").val("");
 					alert("Nome já utilizado nesta sala");
 				}
 			});
 		});
 
-		socket.on("atualizar usuarios", function(usuarios){
-			$("#lista_usuarios").empty();
-			$("#lista_usuarios").append("<option value=''>Todos</option>");
-				$.each(usuarios, function(indice){
-					const opcao_usuario = $("<option />").text(usuarios[indice]);
-					$("#lista_usuarios").append(opcao_usuario);
+		socket.on("atualizar usuarios", function(users){
+			$("#feed_users").empty();
+			$("#feed_users").append("<option value=''>Todos</option>");
+				$.each(users, function(index){
+					const user_option = $("<option />").text(users[index]);
+					$("#feed_users").append(user_option);
 			});
 		});
 

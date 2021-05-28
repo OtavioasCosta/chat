@@ -10,7 +10,7 @@ body{
 	height: 100vh;
 }
 
-#acesso_usuario form {
+#user_access form {
 	display: flex;
 }
 
@@ -49,7 +49,7 @@ form input[type='submit']{
 	width:19%;
 	margin-left: 10px;
 }
-#historico_mensagens, #lista_usuarios{
+#feed_message, #feed_users{
 	background: rgba(0, 0, 0, .5);
 	height: 550px;
 	float:left;
@@ -60,12 +60,12 @@ form input[type='submit']{
 	padding: 10px;
 	color: #fff;
 }
-#sala_chat{
+#chat_room{
 	display: none;
 	position: relative;
 	z-index: 5;
 }
-#acesso_usuario{
+#user_access{
 	height:30px;
 	left:50%;
 	margin-left:-160px;
@@ -74,14 +74,14 @@ form input[type='submit']{
 	top:50%;
 	width:320px;
 }
-#acesso_usuario form{
+#user_access form{
 	margin:0;
 }
 
-#historico_mensagens{
+#feed_message{
 	border-right: 0;
 }
-#lista_usuarios{
+#feed_users{
 	border: none;
 	height: 554px;
 	color: #fff;
@@ -91,11 +91,11 @@ form input[type='submit']{
 
 }
 
-#lista_usuarios:focus {
+#feed_users:focus {
 	outline: none;
 }
 
-#historico_mensagens .sistema{
+#feed_message .sistema{
 	background-color: rgba(255, 255, 255, .5);
 	color: #FFF;
 	font-weight: bold;
@@ -103,7 +103,7 @@ form input[type='submit']{
 	border-radius: 10px;
 }
 
-#historico_mensagens .privada{
+#feed_message .privada{
 	background-color: rgba(255, 255, 255, .5);
 	color: #333;
 	font-weight: bold;

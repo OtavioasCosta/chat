@@ -1,20 +1,20 @@
-const app = require('http').createServer(resposta); 
+const app = require('http').createServer(response); 
 const fs = require('fs');
 const io = require('socket.io')(app);
-const usuarios = []; 
-const ultimas_mensagens = []; 
+const users = []; 
+const latest_posts = []; 
 app.listen(8080);
 
 console.log("Aplicação está em execução...");
 
-function resposta (req, res) {
-	let arquivo = "";
+function response (req, res) {
+	let file = "";
 	if(req.url == "/"){
-		arquivo = __dirname + '/index.html';
+		file = __dirname + '/index.html';
 	}else{
-		arquivo = __dirname + req.url;
+		file = __dirname + req.url;
 	}
-	fs.readFile(arquivo,
+	fs.readFile(file,
 		function (err, data) {
 			if (err) {
 				res.writeHead(404);
@@ -29,22 +29,22 @@ function resposta (req, res) {
 
 io.on("connection", function(socket){
 
-	socket.on("entrar", function(apelido, callback){
-		if(!(apelido in usuarios)){
-			socket.apelido = apelido;
-			usuarios[apelido] = socket;
+	socket.on("entrar", function(nickname, callback){
+		if(!(nickname in users)){
+			socket.nickname = nickname;
+			users[nickname] = socket;
 		
-			for(indice in ultimas_mensagens){
-				socket.emit("atualizar mensagens", ultimas_mensagens[indice]);
+			for(index in latest_posts){
+				socket.emit("atualizar mensagens", latest_posts[index]);
 			}
 
 
-			const mensagem = pegarDataAtual() + " —  @" + apelido + " acabou de entrar na sala";
-			const obj_mensagem = {msg: mensagem, tipo: 'sistema'};
+			const message = getCurrentDate() + " —  @" + nickname + " acabou de entrar na sala";
+			const obj_message = {msg: message, type: 'sistema'};
 
-			io.sockets.emit("atualizar usuarios", Object.keys(usuarios)); 
-			io.sockets.emit("atualizar mensagens", obj_mensagem); 
-			armazenaMensagem(obj_mensagem); 
+			io.sockets.emit("atualizar usuarios", Object.keys(users)); 
+			io.sockets.emit("atualizar mensagens", obj_message); 
+			storeMessage(obj_message); 
 
 			callback(true);
 		}else{
@@ -53,63 +53,61 @@ io.on("connection", function(socket){
 	});
 
 
-	socket.on("enviar mensagem", function(dados, callback){
+	socket.on("enviar mensagem", function(data, callback){
 
-		let mensagem_enviada = dados.msg;
-		let usuario = dados.usu;
-		if(usuario == null)
-			usuario = '';
+		let message_sent = data.msg;
+		let user = data.usu;
+		if(user == null)
+		user = '';
 
-		mensagem_enviada =  pegarDataAtual() + " — @" + socket.apelido + ": " + mensagem_enviada;
-		const obj_mensagem = {msg: mensagem_enviada, tipo: ''};
+			message_sent =  getCurrentDate() + " — @" + socket.nickname + ": " + message_sent;
+		const obj_message = {msg: message_sent, type: ''};
 
-		if(usuario == ''){
-			io.sockets.emit("atualizar mensagens", obj_mensagem);
-			armazenaMensagem(obj_mensagem); 
+		if(user == ''){
+			io.sockets.emit("atualizar mensagens", obj_message);
+			storeMessage(obj_message); 
 		}else{
-			obj_mensagem.tipo = 'privada';
-			socket.emit("atualizar mensagens", obj_mensagem);
-			usuarios[usuario].emit("atualizar mensagens", obj_mensagem); 
+			obj_message.type = 'privada';
+			socket.emit("atualizar mensagens", obj_message);
+			users[user].emit("atualizar mensagens", obj_message); 
 		}
 		
 		callback();
 	});
 
 	socket.on("disconnect", function(){
-		delete usuarios[socket.apelido];
-		const mensagem = pegarDataAtual() + " —  @" + socket.apelido + " saiu da sala";
-		const obj_mensagem = {msg: mensagem, tipo: 'sistema'};
+		delete users[socket.nickname];
+		const message = getCurrentDate() + " —  @" + socket.nickname + " saiu da sala";
+		const obj_message = {msg: message, type: 'sistema'};
 
+		io.sockets.emit("atualizar usuarios", Object.keys(users));
+		io.sockets.emit("atualizar mensagens", obj_message);
 
-		
-		io.sockets.emit("atualizar usuarios", Object.keys(usuarios));
-		io.sockets.emit("atualizar mensagens", obj_mensagem);
-
-		armazenaMensagem(obj_mensagem);
+		storeMessage(obj_message);
 	});
 
 });
 
 
 
-function pegarDataAtual(){
-	const dataAtual = new Date();
-	const dia = (dataAtual.getDate()<10 ? '0' : '') + dataAtual.getDate();
-	const mes = ((dataAtual.getMonth() + 1)<10 ? '0' : '') + (dataAtual.getMonth() + 1);
-	const ano = dataAtual.getFullYear();
-	const hora = (dataAtual.getHours()<10 ? '0' : '') + dataAtual.getHours();
-	const minuto = (dataAtual.getMinutes()<10 ? '0' : '') + dataAtual.getMinutes();
-	const segundo = (dataAtual.getSeconds()<10 ? '0' : '') + dataAtual.getSeconds();
+function getCurrentDate(){
+	const currentDate = new Date();
+	const day = (currentDate.getDate()<10 ? '0' : '') + currentDate.getDate();
+	const month	= ((currentDate.getMonth() + 1)<10 ? '0' : '') + (currentDate.getMonth() + 1);
+	const year = currentDate.getFullYear();
+	const hour = (currentDate.getHours()<10 ? '0' : '') + currentDate.getHours();
+	const minute = (currentDate.getMinutes()<10 ? '0' : '') + currentDate.getMinutes();
+	const second = (currentDate.getSeconds()<10 ? '0' : '') + currentDate.getSeconds();
 
-	const dataFormatada = dia + "-" + mes + "-" + ano + " " + hora + ":" + minuto + ":" + segundo;
-	return dataFormatada;
+	const formattedDate = day + "-" + month	+ "-" + year + " " + hour + ":" + minute + ":" + second;
+	return formattedDate;
 }
 
 
-function armazenaMensagem(mensagem){
-	if(ultimas_mensagens.length > 5){
-		ultimas_mensagens.shift();
+function storeMessage(message){
+	if(latest_posts.length > 5){
+		latest_posts.shift();
 	}
 
-	ultimas_mensagens.push(mensagem);
+	latest_posts.push(message);
 }
